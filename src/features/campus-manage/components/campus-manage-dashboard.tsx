@@ -1859,26 +1859,28 @@ export function CampusManageDashboard() {
                               <p className="mb-2 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
                                 Role
                               </p>
-                              <Combobox
-                                options={comboboxRoleOptions}
-                                value={selectedExecomRole}
-                                onValueChange={setSelectedExecomRole}
-                                placeholder="Select or type a role..."
-                                emptyText="No matching roles."
-                                disabled={
-                                  isAssigningExecomRole || isCreatingRole
-                                }
-                                className="h-9 rounded-xl"
-                                onCreateNew={(term) => {
-                                  createExecomRole(term, {
-                                    onSuccess: () => {
-                                      toast.success(`Role "${term}" created`);
-                                      setSelectedExecomRole(term);
-                                    },
-                                  });
-                                }}
-                                createNewText="Use custom role"
-                              />
+                              <div className="[&_button]:text-left [&_button]:items-start [&_button]:justify-start [&_button_svg]:shrink-0 [&_button_svg]:mt-0.5">
+                                <Combobox
+                                  options={comboboxRoleOptions}
+                                  value={selectedExecomRole}
+                                  onValueChange={setSelectedExecomRole}
+                                  placeholder="Select or type a role..."
+                                  emptyText="No matching roles."
+                                  disabled={
+                                    isAssigningExecomRole || isCreatingRole
+                                  }
+                                  className="h-9 rounded-xl"
+                                  onCreateNew={(term) => {
+                                    createExecomRole(term, {
+                                      onSuccess: () => {
+                                        toast.success(`Role "${term}" created`);
+                                        setSelectedExecomRole(term);
+                                      },
+                                    });
+                                  }}
+                                  createNewText="Use custom role"
+                                />
+                              </div>
                             </div>
                             <Button
                               type="button"
