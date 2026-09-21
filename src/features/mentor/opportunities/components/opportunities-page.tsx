@@ -153,9 +153,10 @@ function OpportunityTable({
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 text-emerald-600 hover:bg-emerald-50 hover:text-emerald-700 dark:hover:bg-emerald-950/50"
+                        className="h-8 w-8 text-success hover:bg-success/10 hover:text-success dark:hover:bg-success/20"
                         onClick={() => onPublish(o)}
                         disabled={isPublishing}
+                        aria-label="Publish"
                       >
                         <Send className="h-4 w-4" />
                       </Button>
@@ -168,9 +169,10 @@ function OpportunityTable({
                       <Button
                         variant="ghost"
                         size="icon"
-                        className="h-8 w-8 text-amber-600 hover:bg-amber-50 hover:text-amber-700 dark:hover:bg-amber-950/50"
+                        className="h-8 w-8 text-warning hover:bg-warning/10 hover:text-warning dark:hover:bg-warning/20"
                         onClick={() => onClose(o)}
                         disabled={isClosing}
+                        aria-label="Close"
                       >
                         <XCircle className="h-4 w-4" />
                       </Button>
@@ -186,7 +188,7 @@ function OpportunityTable({
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-8 w-8 text-blue-600 hover:bg-blue-50 hover:text-blue-700 dark:hover:bg-blue-950/50"
+                      className="h-8 w-8 text-brand-blue hover:bg-brand-blue/10 hover:text-brand-blue dark:hover:bg-brand-blue/20"
                       onClick={() => onEdit(o)}
                       aria-label="Edit Opportunity"
                     >
@@ -202,6 +204,7 @@ function OpportunityTable({
                       size="icon"
                       className="h-8 w-8 text-destructive hover:bg-destructive/10"
                       onClick={() => onDelete(o)}
+                      aria-label="Archive"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>

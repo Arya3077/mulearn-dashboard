@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 
+import { useCompanies } from "@/features/onboarding/hooks";
 import { useTaskIgDropdown } from "@/features/mentor/tasks/hooks/use-mentor-tasks";
 
 import {
@@ -142,11 +143,13 @@ export function OpportunityFormDialog({
   const isPending = isCreating || isUpdating;
 
   const { data: myIgs = [] } = useTaskIgDropdown();
+  const { data: companies = [] } = useCompanies();
 
   const form = useForm<OpportunityFormValues>({
     resolver: zodResolver(OpportunityFormSchema),
     defaultValues: DEFAULTS,
   });
+  const { dirtyFields } = form.formState;
 
   // ─── Populate form ─────────────────────────────────────────────────────────
 
@@ -183,15 +186,18 @@ export function OpportunityFormDialog({
   // ─── Submit ────────────────────────────────────────────────────────────────
 
   function onSubmit(values: OpportunityFormValues) {
-    const payload: OpportunityFormValues = {
-      ...values,
-
-      // Convert datetime-local values into backend ISO datetimes.
-      starts_at: toBackendDateTime(values.starts_at),
-      ends_at: toBackendDateTime(values.ends_at),
-    };
-
     if (isEdit) {
+      const payload = {
+        ...values,
+        // Undefined omits unchanged fields; null explicitly clears a date.
+        starts_at: dirtyFields.starts_at
+          ? (toBackendDateTime(values.starts_at) ?? null)
+          : undefined,
+        ends_at: dirtyFields.ends_at
+          ? (toBackendDateTime(values.ends_at) ?? null)
+          : undefined,
+      } as Partial<OpportunityFormValues>;
+
       update(payload, {
         onSuccess: () => onOpenChange(false),
       });
@@ -199,9 +205,17 @@ export function OpportunityFormDialog({
       return;
     }
 
-    create(payload, {
-      onSuccess: () => onOpenChange(false),
-    });
+    create(
+      {
+        ...values,
+        // Convert datetime-local values into backend ISO datetimes.
+        starts_at: toBackendDateTime(values.starts_at),
+        ends_at: toBackendDateTime(values.ends_at),
+      },
+      {
+        onSuccess: () => onOpenChange(false),
+      },
+    );
   }
 
   // ─── Render ───────────────────────────────────────────────────────────────
@@ -294,6 +308,49 @@ export function OpportunityFormDialog({
                         {myIgs.map((ig) => (
                           <SelectItem key={ig.id} value={ig.id}>
                             {ig.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* ─── Organization ─────────────────────────────────────── */}
+
+              <FormField
+                control={form.control}
+                name="org_id"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Organization</FormLabel>
+
+                    <Select
+                      value={field.value || "none"}
+                      onValueChange={(value) =>
+                        field.onChange(value === "none" ? "" : value)
+                      }
+                      disabled={isEdit}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue
+                            placeholder={
+                              companies.length === 0
+                                ? "No organizations available"
+                                : "Select an Organization..."
+                            }
+                          />
+                        </SelectTrigger>
+                      </FormControl>
+
+                      <SelectContent>
+                        <SelectItem value="none">None</SelectItem>
+                        {companies.map((company) => (
+                          <SelectItem key={company.id} value={company.id}>
+                            {company.title}
                           </SelectItem>
                         ))}
                       </SelectContent>
