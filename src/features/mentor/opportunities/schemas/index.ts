@@ -11,6 +11,8 @@ export const OPPORTUNITY_STATUSES = [
   "ARCHIVED",
 ] as const;
 
+export type OpportunityStatus = (typeof OPPORTUNITY_STATUSES)[number];
+
 // ─── Opportunity ─────────────────────────────────────────────────────────────
 
 export const OpportunitySchema = z.object({

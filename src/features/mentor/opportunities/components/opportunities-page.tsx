@@ -240,6 +240,7 @@ export function OpportunitiesPage() {
   } = useOpportunities({
     page: publishedPage,
     search: search || undefined,
+    status: "PUBLISHED",
   });
 
   const {
@@ -249,6 +250,7 @@ export function OpportunitiesPage() {
   } = useOpportunities({
     page: closedPage,
     search: search || undefined,
+    status: "CLOSED",
   });
 
   const {
@@ -258,6 +260,7 @@ export function OpportunitiesPage() {
   } = useOpportunities({
     page: archivedPage,
     search: search || undefined,
+    status: "ARCHIVED",
   });
 
   const {
@@ -273,12 +276,6 @@ export function OpportunitiesPage() {
   const { mutate: publishOpp, isPending: isPublishing } =
     usePublishOpportunity();
   const { mutate: closeOpp, isPending: isClosing } = useCloseOpportunity();
-
-  const publishedItems = published?.data.filter(
-    (o) => o.status === "PUBLISHED",
-  );
-  const closedItems = closed?.data.filter((o) => o.status === "CLOSED");
-  const archivedItems = archived?.data.filter((o) => o.status === "ARCHIVED");
 
   useEffect(() => {
     if (publishedError) {
@@ -337,9 +334,9 @@ export function OpportunitiesPage() {
           <TabsList>
             <TabsTrigger value="published">
               Published
-              {publishedItems && publishedItems.length > 0 && (
+              {published?.data && published.data.length > 0 && (
                 <Badge variant="secondary" className="ml-2">
-                  {publishedItems.length}
+                  {published.data.length}
                 </Badge>
               )}
             </TabsTrigger>
@@ -350,7 +347,7 @@ export function OpportunitiesPage() {
 
           <TabsContent value="published" className="mt-4">
             <OpportunityTable
-              items={publishedItems}
+              items={published?.data}
               isLoading={publishedLoading}
               onEdit={setEditOpportunity}
               onDelete={setDeleteTarget}
@@ -368,7 +365,7 @@ export function OpportunitiesPage() {
 
           <TabsContent value="closed" className="mt-4">
             <OpportunityTable
-              items={closedItems}
+              items={closed?.data}
               isLoading={closedLoading}
               onEdit={setEditOpportunity}
               onDelete={setDeleteTarget}
@@ -386,7 +383,7 @@ export function OpportunitiesPage() {
 
           <TabsContent value="archived" className="mt-4">
             <OpportunityTable
-              items={archivedItems}
+              items={archived?.data}
               isLoading={archivedLoading}
               onEdit={setEditOpportunity}
               onDelete={setDeleteTarget}

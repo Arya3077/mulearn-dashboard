@@ -5,7 +5,11 @@
 import { apiClient, publicApiClient } from "@/api/client";
 import { endpoints } from "@/api/endpoints";
 
-import type { Opportunity, OpportunityFormValues } from "../schemas";
+import type {
+  Opportunity,
+  OpportunityFormValues,
+  OpportunityStatus,
+} from "../schemas";
 
 import {
   GenericResponseSchema,
@@ -22,6 +26,7 @@ export interface OpportunityListParams {
   search?: string;
   ig_id?: string;
   org_id?: string;
+  status?: OpportunityStatus | string;
 }
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -57,6 +62,10 @@ function buildListQuery(params: OpportunityListParams): string {
 
   if (params.org_id) {
     query.set("org_id", params.org_id);
+  }
+
+  if (params.status) {
+    query.set("status", params.status);
   }
 
   const queryString = query.toString();
