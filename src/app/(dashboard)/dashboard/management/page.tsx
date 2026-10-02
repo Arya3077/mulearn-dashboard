@@ -1,5 +1,6 @@
 import {
   ArrowRight,
+  Bell,
   Building,
   Home,
   ListTodo,
@@ -17,7 +18,6 @@ import { hasAnyRole } from "@/lib/auth/permissions";
 import {
   ADMIN_ROLES,
   COMMUNITY_SETTINGS_HUB_ROLES,
-  FELLOW_MANAGEMENT_ROLES,
   MANAGEMENT_ROLES,
   SYSTEM_CONFIG_HUB_ROLES,
   USER_MANAGEMENT_HUB_ROLES,
@@ -56,7 +56,7 @@ const MANAGEMENT_ITEMS: ManagementItem[] = [
     description: "Verify roles, tasks, sessions, orgs, companies, and mentors.",
     path: "/dashboard/management/verification",
     color: "bg-chart-2/10 text-chart-2",
-    roles: FELLOW_MANAGEMENT_ROLES,
+    roles: ADMIN_ROLES,
   },
   {
     icon: Trophy,
@@ -110,6 +110,15 @@ const MANAGEMENT_ITEMS: ManagementItem[] = [
     path: "/dashboard/management/homepage",
     color: "bg-chart-2/10 text-chart-2",
     roles: MANAGEMENT_ROLES,
+  },
+  {
+    icon: Bell,
+    title: "Notifications",
+    description:
+      "Dispatch platform-wide admin broadcasts and manage broadcast notifications sent to users.",
+    path: "/dashboard/management/notifications",
+    color: "bg-chart-5/10 text-chart-5",
+    roles: ADMIN_ROLES,
   },
 ];
 
